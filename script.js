@@ -1,17 +1,3 @@
-/**
- * EverydayBD - Online Shop Data Logic
- * 
- * =====================================================================
- * INSTRUCTIONS FOR GOOGLE SHEETS INTEGRATION:
- * =====================================================================
- * 1. Create a Google Sheet with headers: ImageURL, ProductName, Price, Description, Category
- * 2. Add your products to the sheet. The LAST row will be the Featured Product!
- * 3. Go to File > Share > Publish to web.
- * 4. Choose "Entire Document" and "Comma-separated values (.csv)".
- * 5. Click Publish and copy the generated link.
- * 6. Replace the 'GOOGLE_SHEET_CSV_URL' value below with your copied link.
- * 7. Set 'USE_MOCK_DATA' to false.
- */
 
 const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMWtyEy5UASw19U7FMwIb0cKqT_cJ1AlveIryywbbNLokKcxm4ver5pgoaBLTI5AP_9fyJNDaiQNAY/pub?output=csv';
 const USE_MOCK_DATA = false; 
