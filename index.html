@@ -1,49 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EverydayBD</title>
     <meta name="description" content="Discover premium products at our modern online shop.">
-    <!-- Google Fonts -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <a href="#home" class="logo"><img src="logo.png" alt="EverydayBD Logo" class="logo-img"></a>
-            <button id="mobile-nav-toggle" class="mobile-nav-toggle">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            <a href="#home" class="logo">
+                <img src="logo.png" alt="EverydayBD Logo" class="logo-img">
+            </a>
+            <button id="mobile-nav-toggle" class="mobile-nav-toggle"
+                    aria-label="Open menu" aria-controls="nav-links" aria-expanded="false">
+                <svg id="hamburger-icon" viewBox="0 0 24 24" width="22" height="22"
+                     stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round">
+                    <line x1="3" y1="6"  x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+                <svg id="close-icon" viewBox="0 0 24 24" width="22" height="22"
+                     stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"
+                     style="display:none;">
+                    <line x1="18" y1="6"  x2="6"  y2="18"></line>
+                    <line x1="6"  y1="6"  x2="18" y2="18"></line>
+                </svg>
             </button>
             <div class="nav-links" id="nav-links">
                 <a href="#home">Home</a>
                 <a href="#shop">Shop</a>
-                <a href="#">Contact</a>
+                <a href="#" id="contact-link" onclick="openContactModal(); return false;">Contact</a>
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-                    <svg id="theme-icon-dark" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    <svg id="theme-icon-light" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg id="theme-icon-dark" viewBox="0 0 24 24" width="20" height="20"
+                         stroke="currentColor" stroke-width="2" fill="none"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1"  x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22"  y1="4.22"  x2="5.64"  y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1"  y1="12" x2="3"  y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"></line>
+                        <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg id="theme-icon-light" viewBox="0 0 24 24" width="20" height="20"
+                         stroke="currentColor" stroke-width="2" fill="none"
+                         stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
                 </button>
             </div>
         </div>
     </nav>
 
-<br><br>
-    <!-- Search Section -->
     <section class="search-section reveal">
         <div class="container">
             <div class="search-container">
-                <input type="text" id="search-input" placeholder="Search for watches, cosmetics, gadgets...">
-                <button id="search-btn">Search</button>
+                <input type="text" id="search-input"
+                       placeholder="Search watches, cosmetics, gadgets…"
+                       aria-label="Search products" autocomplete="off">
+                <button id="search-btn" aria-label="Search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span>Search</span>
+                </button>
             </div>
-            <!-- Category Filters -->
             <div class="mobile-cat-header">
                 <button id="mobile-cat-toggle" class="mobile-cat-toggle">
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                         stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6"  x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
                     <span>Categories</span>
                 </button>
             </div>
@@ -59,22 +101,16 @@
         </div>
     </section>
 
-    <!-- Featured Product Section -->
     <section id="featured-section" class="featured-section hidden reveal">
         <div class="container">
             <h2 class="section-title">✨ Top Deals</h2>
-            <div id="featured-product" class="featured-product-container">
-                <!-- Featured product injected here -->
-            </div>
+            <div id="featured-product" class="featured-product-container"></div>
         </div>
     </section>
 
-    <!-- Shop Section -->
     <section id="shop" class="shop-section reveal">
         <div class="container">
             <h2 class="section-title">All Products</h2>
-            
-            <!-- Loading Indicator -->
             <div id="loader" class="product-grid">
                 <div class="skeleton"></div>
                 <div class="skeleton"></div>
@@ -83,15 +119,10 @@
                 <div class="skeleton"></div>
                 <div class="skeleton"></div>
             </div>
-
-            <!-- Product Grid -->
-            <div id="product-grid" class="product-grid hidden">
-                <!-- Products will be injected here by script.js -->
-            </div>
+            <div id="product-grid" class="product-grid hidden"></div>
         </div>
     </section>
 
-    <!-- Hero Section -->
     <header class="hero-section reveal" id="home">
         <div class="hero-content">
             <h1>Elevate Your Everyday Style</h1>
@@ -100,41 +131,65 @@
         </div>
     </header>
 
-    <!-- Trust Badges Section -->
     <section class="trust-section reveal">
         <div class="container trust-grid">
             <div class="trust-item">
-                <svg viewBox="0 0 24 24" width="32" height="32" stroke="var(--accent-color)" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <svg viewBox="0 0 24 24" width="32" height="32" stroke="var(--accent-color)" stroke-width="2" fill="none">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
                 <h4>Authentic Products</h4>
                 <p>100% Guaranteed</p>
             </div>
             <div class="trust-item">
-                <svg viewBox="0 0 24 24" width="32" height="32" stroke="var(--accent-color)" stroke-width="2" fill="none"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <svg viewBox="0 0 24 24" width="32" height="32" stroke="var(--accent-color)" stroke-width="2" fill="none">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
                 <h4>Fast Delivery</h4>
                 <p>Across Bangladesh</p>
             </div>
             <div class="trust-item">
-                <svg viewBox="0 0 24 24" width="32" height="32" stroke="var(--accent-color)" stroke-width="2" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <svg viewBox="0 0 24 24" width="32" height="32" stroke="var(--accent-color)" stroke-width="2" fill="none">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
                 <h4>Secure Payment</h4>
                 <p>Safe Checkout</p>
             </div>
             <div class="trust-item">
-                <svg viewBox="0 0 24 24" width="32" height="32" stroke="var(--accent-color)" stroke-width="2" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <svg viewBox="0 0 24 24" width="32" height="32" stroke="var(--accent-color)" stroke-width="2" fill="none">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
                 <h4>24/7 Support</h4>
                 <p>Always Here</p>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="professional-footer reveal">
         <div class="container footer-grid">
             <div class="footer-col brand-col">
                 <img src="logo.png" alt="EverydayBD Logo" class="logo-img footer-logo">
                 <p>Your one-stop destination for premium everyday essentials. Quality meets affordability.</p>
-                <p class="footer-contact"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" style="vertical-align: middle; margin-right: 8px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> <a href="mailto:everydaybdstore@gmail.com" style="display: inline; color: var(--text-secondary);">everydaybdstore@gmail.com</a></p>
+                <p class="footer-contact">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
+                         stroke-width="2" fill="none" style="vertical-align:middle;margin-right:8px;">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <a href="mailto:everydaybdstore@gmail.com"
+                       style="display:inline;color:var(--text-secondary);">everydaybdstore@gmail.com</a>
+                </p>
                 <div class="social-links">
-                    <a href="https://www.facebook.com/profile.php?id=61574345981480" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                    <a href="https://www.facebook.com/profile.php?id=61574345981480"
+                       aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
                 </div>
             </div>
             <div class="footer-col">
@@ -145,9 +200,9 @@
             </div>
             <div class="footer-col">
                 <h4>Customer Care</h4>
-                <a href="#">Contact Us</a>
+                <a href="#" onclick="openContactModal(); return false;">Contact Us</a>
                 <a href="#">Shipping Policy</a>
-                <a href="#">Returns & Refunds</a>
+                <a href="#">Returns &amp; Refunds</a>
             </div>
             <div class="footer-col">
                 <h4>Newsletter</h4>
@@ -158,15 +213,83 @@
                 </div>
             </div>
             <div class="shepu1">
-    <a href="https://drive.google.com/file/d/1lgFbWq8K2A5nUXkdmm3Cp0pIx_owuO9_/view?usp=drive_link">Download apk</a>
-</div>
+                <a href="https://drive.google.com/file/d/1lgFbWq8K2A5nUXkdmm3Cp0pIx_owuO9_/view?usp=drive_link"
+                   target="_blank" rel="noopener noreferrer">Download APK</a>
+            </div>
         </div>
         <div class="footer-bottom">
             <p>&copy; 2026 EverydayBD. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- JavaScript -->
+    <nav class="bottom-nav" aria-label="Mobile navigation">
+        <a href="#home" class="bottom-nav-item active" id="bnav-home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Home</span>
+        </a>
+        <a href="#shop" class="bottom-nav-item" id="bnav-shop">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <circle cx="9"  cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span>Shop</span>
+        </a>
+        <a href="#" class="bottom-nav-item" id="bnav-search"
+           onclick="document.getElementById('search-input').focus(); return false;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Search</span>
+        </a>
+        <a href="#" class="bottom-nav-item" id="bnav-contact"
+           onclick="openContactModal(); return false;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <span>Contact</span>
+        </a>
+    </nav>
+
+    <div id="contact-modal" class="contact-modal-overlay"
+         onclick="closeContactModal(event)" aria-modal="true" role="dialog" aria-label="Contact us">
+        <div class="contact-modal-box">
+            <button class="contact-modal-close" onclick="closeContactModal()" aria-label="Close">&#x2715;</button>
+            <div class="contact-modal-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </div>
+            <h2>আমাদের সাথে যোগাযোগ করুন</h2>
+            <p>যেকোনো প্রশ্ন বা অর্ডারের জন্য আমাদের সাথে যোগাযোগ করুন।</p>
+            <div class="contact-modal-links">
+                <a href="mailto:everydaybdstore@gmail.com" class="contact-modal-btn gmail">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <span>Gmail দিয়ে যোগাযোগ</span>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61574345981480"
+                   target="_blank" rel="noopener noreferrer" class="contact-modal-btn facebook">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                    <span>Facebook-এ Message করুন</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
+
 </html>
