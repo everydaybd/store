@@ -1,0 +1,260 @@
+:root {
+  --primary-ink: #1e293b;
+  --secondary-ink: #475569;
+  --accent-blue: #2563eb;
+  --accent-gold: #b45309;
+  --paper-bg: #ffffff;
+  --app-bg: #f8fafc;
+  --border-light: #e2e8f0;
+  --border-dark: #cbd5e1;
+  --success-ink: #059669;
+  --danger-ink: #dc2626;
+  --font-main: 'Inter', -apple-system, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background-color: var(--app-bg);
+  color: var(--primary-ink);
+  font-family: var(--font-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 0.5rem;
+}
+
+/* The Main Ledger Page */
+.ledger-page {
+  background-color: var(--paper-bg);
+  width: 100%;
+  max-width: 1000px;
+  min-height: 100vh;
+  padding: 3rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 20px 25px -5px rgba(0,0,0,0.03);
+  border: 1px solid var(--border-dark);
+  position: relative;
+}
+
+/* Page Header */
+.ledger-header {
+  border-bottom: 3px double var(--primary-ink);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+}
+
+.company-brand h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--primary-ink);
+}
+
+.company-brand p {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--secondary-ink);
+}
+
+/* Navigation & Date */
+.ledger-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.page-info {
+  text-align: center;
+  min-width: 120px;
+}
+
+.page-info .month-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+}
+
+.nav-btn {
+  background: none;
+  border: 1px solid var(--border-dark);
+  color: var(--primary-ink);
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+/* Ultra-Compact Stat Bar */
+.stat-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid var(--border-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2.5rem;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 30px;
+  background: var(--border-dark);
+}
+
+.stat-bar .stat-label { margin-bottom: 0.25rem; font-size: 0.6rem; }
+.stat-bar .stat-value { font-size: 1.25rem; }
+
+@media (max-width: 768px) {
+  .stat-bar { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+  .stat-divider { display: none; }
+}
+
+/* Financial Grid */
+.ledger-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-box {
+  padding: 1.25rem;
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  background-color: #fcfcfc;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--secondary-ink);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  display: block;
+}
+
+/* The Table (Ledger Entries) */
+.table-section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--primary-ink);
+  padding-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border-dark);
+}
+
+.ledger-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* Force scroll on mobile */
+}
+
+.ledger-table th {
+  text-align: left;
+  padding: 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: #f8fafc;
+  border: 1px solid var(--border-dark);
+}
+
+.ledger-table td {
+  padding: 0.75rem;
+  border: 1px solid var(--border-dark);
+  font-size: 0.8rem;
+}
+
+/* Badges */
+.badge {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+
+.badge-credit { background-color: #dcfce7; color: var(--success-ink); }
+.badge-debit { background-color: #fee2e2; color: var(--danger-ink); }
+
+/* Charts */
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.chart-container {
+  height: 250px;
+}
+
+.search-input {
+  padding: 0.5rem;
+  border: 1px solid var(--border-dark);
+  font-size: 0.75rem;
+  width: 100%;
+  max-width: 200px;
+  outline: none;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  body { padding: 0; }
+  .ledger-page { padding: 1.5rem; border: none; box-shadow: none; }
+  .ledger-header { flex-direction: column; align-items: center; text-align: center; }
+  .ledger-nav { justify-content: center; width: 100%; }
+  .page-info { order: -1; width: 100%; margin-bottom: 0.5rem; }
+  .stat-value { font-size: 1.5rem; }
+  .charts-section { grid-template-columns: 1fr; }
+  .search-input { max-width: 100%; }
+  .section-title { text-align: center; justify-content: center; }
+}
+
+.btn {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn:active { transform: scale(0.95); }
