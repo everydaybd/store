@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
@@ -289,7 +287,34 @@
         </div>
     </div>
 
+    <div id="product-modal" class="product-modal-overlay" onclick="handleModalOverlayClick(event)" aria-modal="true" role="dialog" aria-label="Product details">
+        <div class="product-modal-box">
+            <button class="product-modal-close" onclick="closeProductModal()" aria-label="Close">&#x2715;</button>
+            <div class="product-modal-content">
+                <div class="pm-gallery">
+                    <div class="pm-carousel">
+                        <div class="pm-carousel-inner" id="pm-carousel-inner"></div>
+                        <button class="pm-carousel-control pm-prev" id="pm-prev" aria-label="Previous image">&#8249;</button>
+                        <button class="pm-carousel-control pm-next" id="pm-next" aria-label="Next image">&#8250;</button>
+                        <div class="pm-carousel-indicators" id="pm-indicators"></div>
+                    </div>
+                </div>
+                <div class="pm-info">
+                    <span class="pm-category" id="pm-category"></span>
+                    <h2 class="pm-title" id="pm-title"></h2>
+                    <div class="pm-price-container" id="pm-price"></div>
+                    <p class="pm-description" id="pm-description"></p>
+                    <div class="pm-actions">
+                        <a href="#" id="pm-order-btn" class="pm-order-btn">🛒 Order Now</a>
+                        <button id="pm-share-btn" class="pm-share-btn" onclick="shareProduct()">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
-
 </html>
