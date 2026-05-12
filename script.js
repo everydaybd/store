@@ -3,6 +3,113 @@ const USE_MOCK_DATA = false;
 const mockProducts = [];
 let allProducts = [];
 
+function openProductModal(product) {
+    const images = (product.ImageURL || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (images.length === 0) images.push('https://via.placeholder.com/600x400?text=No+Image');
+
+    const inner      = document.getElementById('pm-carousel-inner');
+    const indicators = document.getElementById('pm-indicators');
+    const prevBtn    = document.getElementById('pm-prev');
+    const nextBtn    = document.getElementById('pm-next');
+
+    inner.innerHTML = images.map(src => `
+        <div class="pm-carousel-item">
+            <img src="${src}" alt="${product.ProductName}"
+                 onerror="this.src='https://via.placeholder.com/600x400?text=Image+Not+Found'">
+        </div>`).join('');
+
+    const multiImg = images.length > 1;
+    prevBtn.style.display    = multiImg ? 'flex' : 'none';
+    nextBtn.style.display    = multiImg ? 'flex' : 'none';
+    indicators.innerHTML     = multiImg
+        ? images.map((_, i) => `<span class="dot ${i===0?'active':''}" data-index="${i}"></span>`).join('')
+        : '';
+
+    let cur = 0;
+    const goTo = idx => {
+        cur = (idx + images.length) % images.length;
+        inner.style.transform = `translateX(-${cur * 100}%)`;
+        document.querySelectorAll('#pm-indicators .dot').forEach((d, i) =>
+            d.classList.toggle('active', i === cur));
+    };
+    prevBtn.onclick = () => goTo(cur - 1);
+    nextBtn.onclick = () => goTo(cur + 1);
+    document.querySelectorAll('#pm-indicators .dot').forEach(dot =>
+        dot.addEventListener('click', e => goTo(parseInt(e.target.dataset.index))));
+
+    const carouselEl = inner.parentElement;
+    if (!carouselEl._swipeSetup) {
+        carouselEl._swipeSetup = true;
+        let txStart = 0;
+        carouselEl.addEventListener('touchstart', e => { txStart = e.touches[0].clientX; }, { passive: true });
+        carouselEl.addEventListener('touchend', e => {
+            const diff = txStart - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 45 && window._pmSwipeHandler) window._pmSwipeHandler(diff > 0 ? 1 : -1);
+        }, { passive: true });
+    }
+    window._pmSwipeHandler = dir => goTo(cur + dir);
+
+    document.getElementById('pm-category').textContent    = product.Category || '';
+    document.getElementById('pm-title').textContent       = product.ProductName;
+    document.getElementById('pm-description').textContent = product.Description;
+
+    const discountPct    = parseFloat(product.Discount) || 0;
+    const rawPrice       = parseFloat((product.Price || '0').toString().replace(/[^0-9.]/g, '')) || 0;
+    const currencySymbol = (product.Price || '').replace(/[0-9.,\s]/g, '').trim() || '৳';
+    let priceHTML;
+    if (discountPct > 0 && rawPrice > 0) {
+        const discounted = Math.round(rawPrice * (1 - discountPct / 100));
+        priceHTML = `<div class="price-block">
+            <span class="price-original">${currencySymbol}${rawPrice.toLocaleString()}</span>
+            <span class="product-price">${currencySymbol}${discounted.toLocaleString()}</span>
+        </div>`;
+    } else {
+        priceHTML = `<span class="product-price">${product.Price}</span>`;
+    }
+    document.getElementById('pm-price').innerHTML = priceHTML;
+    document.getElementById('pm-order-btn').href =
+        `order.html?product=${encodeURIComponent(product.ProductName)}`;
+
+    const modal = document.getElementById('product-modal');
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?product=' + encodeURIComponent(product.ProductName);
+    window.history.pushState({path:newUrl}, '', newUrl);
+}
+
+function closeProductModal() {
+    const modal = document.getElementById('product-modal');
+    if (!modal) return;
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+    window.history.pushState({path:newUrl}, '', newUrl);
+}
+
+function shareProduct() {
+    const url = window.location.href;
+    const title = document.getElementById('pm-title').textContent;
+
+    navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('pm-share-btn');
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '✅ Link Copied!';
+        
+        if (navigator.share) {
+            navigator.share({ title: title, url: url }).catch(() => {});
+        }
+
+        setTimeout(() => { btn.innerHTML = originalHTML; }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
+
+function handleModalOverlayClick(event) {
+    if (event.target === document.getElementById('product-modal')) closeProductModal();
+}
+
 function openContactModal() {
     const modal = document.getElementById('contact-modal');
     if (!modal) return;
@@ -25,6 +132,7 @@ document.addEventListener('keydown', (e) => {
             modal.classList.remove('open');
             document.body.style.overflow = '';
         }
+        closeProductModal();
     }
 });
 
@@ -151,15 +259,22 @@ document.addEventListener('DOMContentLoaded', () => {
             priceHTML = `<span class="product-price">${product.Price}</span>`;
         }
 
+        const images = (product.ImageURL || '').split(',').map(s => s.trim()).filter(Boolean);
         const badgeHTML = discountPct > 0
             ? `<span class="discount-badge">-${discountPct}%</span>`
+            : '';
+        const galleryBadgeHTML = images.length > 1 
+            ? `<span class="gallery-badge"><i class="fas fa-images"></i> ${images.length}</span>` 
             : '';
 
         return `
             <div class="${isFeatured ? 'featured-card reveal' : 'product-card reveal'}" style="--delay: ${delay}">
-                <div class="product-image-container">
+                <div class="product-image-container pm-trigger"
+                     data-product="${encodeURIComponent(product.ProductName)}"
+                     role="button" aria-label="View images of ${product.ProductName}">
                     ${badgeHTML}
-                    <img src="${product.ImageURL}" alt="${product.ProductName}" loading="lazy"
+                    ${galleryBadgeHTML}
+                    <img src="${images[0] || 'https://via.placeholder.com/600x400?text=No+Image'}" alt="${product.ProductName}" loading="lazy"
                          onerror="this.src='https://via.placeholder.com/600x400?text=Image+Not+Found'">
                 </div>
                 <div class="product-info">
@@ -249,13 +364,29 @@ document.addEventListener('DOMContentLoaded', () => {
         productGrid.classList.remove('hidden');
 
         if (products.length === 0) {
-            productGrid.innerHTML = '<p style="text-align:center;grid-column:1/-1;padding:2rem;">No products found matching your search.</p>';
+            const query = searchInput.value;
+            productGrid.innerHTML = `
+                <div style="text-align:center;grid-column:1/-1;padding:3rem 1rem;">
+                    <p style="color:var(--text-secondary);margin-bottom:1.5rem;">আপনার কাঙ্ক্ষিত প্রোডাক্টটি খুঁজে পাওয়া যায়নি।</p>
+                    <a href="https://wa.me/8801757143424?text=${encodeURIComponent('হ্যালো, আমি এই প্রোডাক্টটি খুঁজছি কিন্তু আপনাদের স্টোরে খুঁজে পাচ্ছি না: ' + query)}" 
+                       target="_blank" class="request-btn">
+                       📢 Request this Product
+                    </a>
+                </div>`;
             return;
         }
 
         productGrid.innerHTML = products.map((p, i) => createProductCard(p, false, i)).join('');
         setTimeout(observeElements, 50);
     };
+
+    document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('.pm-trigger');
+        if (!trigger) return;
+        const name = decodeURIComponent(trigger.dataset.product || '');
+        const prod = allProducts.find(p => p.ProductName === name);
+        if (prod) openProductModal(prod);
+    });
 
     const translationMap = {
         'ghori': 'watch', 'ঘড়ি': 'watch', 'watch': 'watch', 'ঘড়ির': 'watch',
@@ -409,7 +540,17 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         fetch(GOOGLE_SHEET_CSV_URL)
             .then(res => { if (!res.ok) throw new Error('Network error'); return res.text(); })
-            .then(csv => { allProducts = parseCSV(csv); filterProducts(); })
+            .then(csv => { 
+                allProducts = parseCSV(csv); 
+                filterProducts(); 
+                
+                const params = new URLSearchParams(window.location.search);
+                const prodName = params.get('product');
+                if (prodName) {
+                    const p = allProducts.find(x => x.ProductName === decodeURIComponent(prodName));
+                    if (p) setTimeout(() => openProductModal(p), 500);
+                }
+            })
             .catch(err => {
                 console.error(err);
                 loader.innerHTML = '<p style="color:#ef4444;grid-column:1/-1;text-align:center;">Failed to load products. Please check the Google Sheet link.</p>';
