@@ -1,8 +1,169 @@
+import { 
+    auth, 
+    googleProvider, 
+    signInWithPopup, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword, 
+    signOut, 
+    onAuthStateChanged,
+    updateProfile
+} from "./firebase-config.js";
+
 const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMWtyEy5UASw19U7FMwIb0cKqT_cJ1AlveIryywbbNLokKcxm4ver5pgoaBLTI5AP_9fyJNDaiQNAY/pub?output=csv';
 const USE_MOCK_DATA = false;
 const mockProducts = [];
 let allProducts = [];
 
+/* --- Authentication Logic --- */
+const authModal = document.getElementById('auth-modal');
+const loginBtn = document.getElementById('login-btn');
+const bnavProfile = document.getElementById('bnav-profile');
+const bnavProfileText = document.getElementById('bnav-profile-text');
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
+const googleLoginBtn = document.getElementById('google-login-btn');
+const userProfile = document.getElementById('user-profile');
+const userAvatar = document.getElementById('user-avatar');
+const userName = document.getElementById('user-name');
+const logoutBtn = document.getElementById('logout-btn');
+const profileDropdown = document.getElementById('profile-dropdown');
+const authTabs = document.querySelectorAll('.auth-tab');
+const authForms = document.querySelectorAll('.auth-form');
+
+const openAuthModal = () => {
+    authModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+};
+
+const closeAuthModal = () => {
+    authModal.classList.remove('open');
+    document.body.style.overflow = '';
+};
+
+window.closeAuthModal = closeAuthModal;
+
+window.handleAuthModalClick = (e) => {
+    if (e.target === authModal) closeAuthModal();
+};
+
+if (loginBtn) loginBtn.addEventListener('click', openAuthModal);
+if (bnavProfile) {
+    bnavProfile.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!auth.currentUser) {
+            openAuthModal();
+        } else {
+            profileDropdown.classList.toggle('open');
+        }
+    });
+}
+
+if (userProfile) {
+    userProfile.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileDropdown.classList.toggle('open');
+    });
+}
+
+document.addEventListener('click', () => {
+    if (profileDropdown) profileDropdown.classList.remove('open');
+});
+
+authTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        authTabs.forEach(t => t.classList.remove('active'));
+        authForms.forEach(f => f.classList.remove('active'));
+        tab.classList.add('active');
+        const target = tab.dataset.tab === 'login' ? 'login-form' : 'signup-form';
+        document.getElementById(target).classList.add('active');
+    });
+});
+
+// Email/Password Login
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const errorEl = document.getElementById('login-error');
+        errorEl.style.display = 'none';
+
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            closeAuthModal();
+        } catch (error) {
+            console.error(error);
+            errorEl.style.display = 'block';
+            errorEl.textContent = "Invalid email or password.";
+        }
+    });
+}
+
+// Email/Password Signup
+if (signupForm) {
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const errorEl = document.getElementById('signup-error');
+        errorEl.style.display = 'none';
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            await updateProfile(userCredential.user, { displayName: name });
+            closeAuthModal();
+        } catch (error) {
+            console.error(error);
+            errorEl.style.display = 'block';
+            errorEl.textContent = "Registration failed. " + (error.message.includes('email-already-in-use') ? "This email is already in use." : "Please try again.");
+        }
+    });
+}
+
+// Google Login
+if (googleLoginBtn) {
+    googleLoginBtn.addEventListener('click', async () => {
+        try {
+            await signInWithPopup(auth, googleProvider);
+            closeAuthModal();
+        } catch (error) {
+            console.error(error);
+        }
+    });
+}
+
+// Logout
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+            await signOut(auth);
+            profileDropdown.classList.remove('open');
+        } catch (error) {
+            console.error(error);
+        }
+    });
+}
+
+// Auth State Observer
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in
+        if (loginBtn) loginBtn.classList.add('hidden');
+        if (userProfile) userProfile.classList.remove('hidden');
+        if (userName) userName.textContent = user.displayName || 'User';
+        if (userAvatar) userAvatar.textContent = (user.displayName || 'U')[0].toUpperCase();
+        if (bnavProfileText) bnavProfileText.textContent = 'Account';
+    } else {
+        // User is signed out
+        if (loginBtn) loginBtn.classList.remove('hidden');
+        if (userProfile) userProfile.classList.add('hidden');
+        if (bnavProfileText) bnavProfileText.textContent = 'Login';
+    }
+});
+
+/* --- Existing Logic --- */
 function openProductModal(product) {
     const images = (product.ImageURL || '').split(',').map(s => s.trim()).filter(Boolean);
     if (images.length === 0) images.push('https://via.placeholder.com/600x400?text=No+Image');
@@ -124,6 +285,12 @@ function closeContactModal(event) {
     modal.classList.remove('open');
     document.body.style.overflow = '';
 }
+window.closeContactModal = closeContactModal;
+window.openContactModal = openContactModal;
+window.handleModalOverlayClick = handleModalOverlayClick;
+window.shareProduct = shareProduct;
+window.closeProductModal = closeProductModal;
+window.openProductModal = openProductModal;
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
