@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EverydayBD</title>
     <meta name="description" content="Discover premium products at our modern online shop.">
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="index/image/logo.png">
+    <link rel="apple-touch-icon" href="index/image/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="index/css/styles.css">
     <link rel="stylesheet" href="index/css/components.css">
 </head>
@@ -212,10 +213,19 @@
                        style="display:inline;color:var(--text-secondary);">everydaybdstore@gmail.com</a>
                 </p>
                 <div class="social-links">
-                    <a href="https://www.facebook.com/profile.php?id=61574345981480"
-                       aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.facebook.com/profile.php?id=61589674220188"
+                       aria-label="Facebook Page" target="_blank" rel="noopener noreferrer" title="Facebook Page">
                         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
                             <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://www.facebook.com/groups/1252762550304259"
+                       aria-label="Facebook Group" target="_blank" rel="noopener noreferrer" style="margin-left: 10px;" title="Facebook Group">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                         </svg>
                     </a>
                 </div>
@@ -302,13 +312,24 @@
                     </svg>
                     <span>Gmail দিয়ে যোগাযোগ</span>
                 </a>
-                <a href="https://www.facebook.com/profile.php?id=61574345981480"
+                <a href="https://www.facebook.com/profile.php?id=61589674220188"
                    target="_blank" rel="noopener noreferrer" class="contact-modal-btn facebook">
                     <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
                          stroke="currentColor" stroke-width="2" stroke-linecap="round">
                         <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
                     </svg>
-                    <span>Facebook-এ Message করুন</span>
+                    <span>Facebook Page-এ Message করুন</span>
+                </a>
+                <a href="https://www.facebook.com/groups/1252762550304259"
+                   target="_blank" rel="noopener noreferrer" class="contact-modal-btn facebook" style="background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.2); color: var(--accent-color);">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span>Facebook Group-এ যুক্ত হোন</span>
                 </a>
             </div>
         </div>
@@ -333,6 +354,9 @@
                     <p class="pm-description" id="pm-description"></p>
                     <div class="pm-actions">
                         <a href="#" id="pm-order-btn" class="pm-order-btn">🛒 Order Now</a>
+                        <button id="pm-love-btn" class="pm-love-btn" aria-label="Love this product">
+                            <i class="far fa-heart"></i> Love <span class="love-count">0</span>
+                        </button>
                         <button id="pm-share-btn" class="pm-share-btn" onclick="shareProduct()">
                             <i class="fas fa-share-alt"></i> Share
                         </button>
